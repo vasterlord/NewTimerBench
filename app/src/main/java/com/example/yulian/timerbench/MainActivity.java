@@ -1,5 +1,6 @@
 package com.example.yulian.timerbench;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,32 +15,63 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     Button btnStart, btnStop,btnSetTime;
     TextView textViewTime;
-    EditText edTime;
-    Typeface tf;
+    public Typeface tf;
+    FrameLayout frameTime;
+    LinearLayout pincers;
     String tm;
     long timeToEnd = 30000;
+    private static int sHour;
+    private static int sMinute;
+    private static int sSecond;
+    private static long time;
+    private static long timePause;
+    public static void setTimePause(long timePause) {
+        MainActivity.timePause = timePause;
+    }
+
+    CounterClass timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,26 +82,70 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         btnStart = (Button)findViewById(R.id.btnStart);
         btnStop = (Button)findViewById(R.id.btnStop);
-        edTime = (EditText) findViewById(R.id.edTime);
+        pincers = (LinearLayout) findViewById(R.id.pincers);
+        frameTime = (FrameLayout) findViewById(R.id.frameTime);
         textViewTime = (TextView)findViewById(R.id.textViewTime);
-        tf = Typeface.createFromAsset(getAssets(), "ds-digital.ttf");
-        textViewTime.setTypeface(tf);
-        textViewTime.setText("00:00:00");
-      //tm = edTime.getText().toString();
-       //timeToEnd = Integer.parseInt(textViewTime.getText().toString());
-        final CounterClass timer = new CounterClass(timeToEnd,1000);
-      //  runTimer();
+       // tf = Typeface.createFromAsset(getAssets(), "ds-digital.ttf");
+        //textViewTime.setTypeface(tf);
+        final NumberPicker npHours = (NumberPicker) findViewById(R.id.npHours);
+        final NumberPicker npMinutes = (NumberPicker) findViewById(R.id.npMinute);
+        final NumberPicker npSeconds = (NumberPicker) findViewById(R.id.npSecond);
+
+        npHours.setMaxValue(23);
+        npHours.setMinValue(0);
+        npHours.setWrapSelectorWheel(false);
+        npMinutes.setMaxValue(59);
+        npMinutes.setMinValue(0);
+        npMinutes.setWrapSelectorWheel(false);
+        npSeconds.setMaxValue(59);
+        npSeconds.setMinValue(0);
+        npSeconds.setWrapSelectorWheel(false);
         btnStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                timer.start();
+                if (btnStart.getText().toString().equals("Start")) {
+                    MainActivity.sHour = npHours.getValue();
+                    MainActivity.sMinute = npMinutes.getValue();
+                    MainActivity.sSecond = npSeconds.getValue();
+                    MainActivity.time = (1000 * (60 * (60 * MainActivity.sHour)) + 1000 * (60 * MainActivity.sMinute) + 1000 * (MainActivity.sSecond) + 500);
+                    timer = new CounterClass(MainActivity.time, 1000);
+                    timer.start();
+                    btnStart.setText("Pause");
+                    btnStop.setText("Cancel");
+                    pincers.setVisibility(View.INVISIBLE);
+                   frameTime.setVisibility(View.VISIBLE);
+                } else if (btnStart.getText().toString().equals("Resume")) {
+                    MainActivity.time = MainActivity.timePause;
+                    timer = new CounterClass(MainActivity.time, 1000);
+                    timer.start();
+                    btnStart.setText("Pause");
+                    btnStop.setText("Cancel");
+                    pincers.setVisibility(View.INVISIBLE);
+                    frameTime.setVisibility(View.VISIBLE);
+                } else {
+                    timer.cancel();
+                    btnStart.setText("Resume");
+                    btnStop.setText("Cancel");
+                }
             }
+
         });
         btnStop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                timer.cancel();
+                if (btnStop.getText().toString().equals("Cancel")) {
+                    timer.onFinish();
+                    timer.cancel();
+                  //  frameTime.setVisibility(View.INVISIBLE);
+                    btnStart.setText("Start");
+                    btnStop.setText("Reset");
+                } else {
+                    btnStart.setText("Start");
+                    npHours.setValue(0);
+                    npMinutes.setValue(0);
+                    npSeconds.setValue(0);
+                    textViewTime.setText("00:00:00");
+                }
             }
         });
     }
@@ -81,7 +157,9 @@ public class MainActivity extends AppCompatActivity
         }
         @Override
         public void onFinish() {
-            textViewTime.setText("00:00:00");
+            pincers.setVisibility(View.VISIBLE);
+            textViewTime.setText("End now");
+            btnStart.setText("Start");
         }
         @SuppressLint("NewApi")
         @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -122,7 +200,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -134,18 +212,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        }
+        else if (id == R.id.nav_send) {
+            Intent intent = new Intent(this, Developers.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
