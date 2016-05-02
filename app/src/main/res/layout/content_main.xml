@@ -10,10 +10,18 @@
     tools:showIn="@layout/app_bar_main"
     android:background="#ffffff">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragreplace"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:layout_below="@+id/ScrollMenu"></FrameLayout>
+
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/horizontalScrollView" >
+        android:id="@+id/ScrollMenu" >
 
         <LinearLayout
             android:orientation="horizontal"
@@ -22,20 +30,21 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_alignParentLeft="false"
-            android:id="@+id/linearLayout"
-            android:background="#ffffff">
+            android:id="@+id/MenuOptions"
+            android:background="#ffffff" >
 
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/btnOpenSportTimer"
+                android:id="@+id/imgBtnSportTimer"
                 android:src="@drawable/timer"
+                android:layout_marginLeft="2dp"
                 android:onClick="onClick" />
 
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/btnOpenStopWatch"
+                android:id="@+id/imgBtnStopwatch"
                 android:src="@drawable/al"
                 android:layout_marginLeft="90dp"
                 android:onClick="onClick" />
@@ -43,20 +52,11 @@
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/btnOpenReminder"
-                android:layout_marginLeft="80dp"
+                android:id="@+id/imgBtnReminder"
+                android:layout_marginLeft="75dp"
                 android:src="@drawable/rem"
                 android:onClick="onClick" />
-
         </LinearLayout>
     </HorizontalScrollView>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragreplace"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/horizontalScrollView"
-        android:background="#ffffff"></FrameLayout>
 
 </RelativeLayout>

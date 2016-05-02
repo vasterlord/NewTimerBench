@@ -26,10 +26,10 @@ import com.example.yulian.timerbench.SportTimer;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    ImageButton btnOpenSportTimer, btnOpenStopWatch, btnOpenReminder;
+    ImageButton imgBtnSportTimer, imgBtnStopwatch, imgBtnReminder;
     SportTimer sportTimer;
     Stopwatch stopwatch;
-    FragmentTransaction fTrans,fTrans1;
+    FragmentManager fTrans;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,31 +46,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         sportTimer = new SportTimer();
-        FragmentManager fTrans = getSupportFragmentManager();
+        fTrans = getSupportFragmentManager();
+        setTitle("Sport&Fighting Timer");
         fTrans.beginTransaction()
                 .replace(R.id.fragreplace, sportTimer).commit();
-
-        btnOpenSportTimer = (ImageButton) findViewById(R.id.btnOpenSportTimer);
-        btnOpenStopWatch = (ImageButton) findViewById(R.id.btnOpenStopWatch);
-        btnOpenReminder = (ImageButton) findViewById(R.id.btnOpenReminder);
+        fTrans.addOnBackStackChangedListener(null);
+        imgBtnSportTimer = (ImageButton) findViewById(R.id.imgBtnSportTimer);
+        imgBtnStopwatch = (ImageButton) findViewById(R.id.imgBtnStopwatch);
+        imgBtnReminder = (ImageButton) findViewById(R.id.imgBtnReminder);
     }
     public void onClick(View view) {
+        fTrans = getSupportFragmentManager();
+        sportTimer = new SportTimer();
+        stopwatch = new Stopwatch();
         switch (view.getId()){
-            case R.id.btnOpenSportTimer:
+            case R.id.imgBtnSportTimer:
                 setTitle("Sport&Fighting Timer");
-                sportTimer = new SportTimer();
-                FragmentManager fTrans = getSupportFragmentManager();
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, sportTimer).commit();
-            case R.id. btnOpenStopWatch:
+                fTrans.addOnBackStackChangedListener(null);
+                break;
+            case R.id.imgBtnStopwatch :
                 setTitle("StopWatch");
-                stopwatch = new Stopwatch();
-                FragmentManager fTrans1 = getSupportFragmentManager();
-                fTrans1.beginTransaction()
+                fTrans.beginTransaction()
                         .replace(R.id.fragreplace, stopwatch).commit();
-            case R.id.btnOpenReminder:
+                fTrans.addOnBackStackChangedListener(null);
+                break;
+            case R.id.imgBtnReminder:
                 setTitle("Alarm and Reminder");
-               // fTrans.replace(R.id.fragreplace, sportTimer);
+                fTrans.addOnBackStackChangedListener(null);
+                break;
             default:
                 break;
         }
