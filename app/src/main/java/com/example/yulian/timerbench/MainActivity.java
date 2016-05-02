@@ -1,11 +1,8 @@
 package com.example.yulian.timerbench;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,63 +12,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.os.Build;
-import android.os.CountDownTimer;
-import android.os.CountDownTimer;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
-import android.widget.TextView;
-import java.util.concurrent.TimeUnit;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.graphics.Typeface;
-
+import android.widget.ImageButton;
+import android.app.FragmentTransaction;
+import android.content.pm.ActivityInfo;
+import android.app.Fragment;
+import android.app.FragmentHostCallback;
+import com.example.yulian.timerbench.R;
+import com.example.yulian.timerbench.Stopwatch;
+import com.example.yulian.timerbench.SportTimer;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    Button btnStart, btnStop,btnSetTime;
-    TextView textViewTime;
-    public Typeface tf;
-    FrameLayout frameTime;
-    LinearLayout pincers;
-    String tm;
-    long timeToEnd = 30000;
-    private static int sHour;
-    private static int sMinute;
-    private static int sSecond;
-    private static long time;
-    private static long timePause;
-    public static void setTimePause(long timePause) {
-        MainActivity.timePause = timePause;
-    }
-
-    CounterClass timer;
+    ImageButton btnOpenSportTimer, btnOpenStopWatch, btnOpenReminder;
+    SportTimer sportTimer;
+    Stopwatch stopwatch;
+    FragmentTransaction fTrans,fTrans1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setTitle(" Sport&Fighting Timer");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,99 +45,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        btnStart = (Button)findViewById(R.id.btnStart);
-        btnStop = (Button)findViewById(R.id.btnStop);
-        pincers = (LinearLayout) findViewById(R.id.pincers);
-        frameTime = (FrameLayout) findViewById(R.id.frameTime);
-        textViewTime = (TextView)findViewById(R.id.textViewTime);
-       // tf = Typeface.createFromAsset(getAssets(), "ds-digital.ttf");
-        //textViewTime.setTypeface(tf);
-        final NumberPicker npHours = (NumberPicker) findViewById(R.id.npHours);
-        final NumberPicker npMinutes = (NumberPicker) findViewById(R.id.npMinute);
-        final NumberPicker npSeconds = (NumberPicker) findViewById(R.id.npSecond);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        sportTimer = new SportTimer();
+        FragmentManager fTrans = getSupportFragmentManager();
+        fTrans.beginTransaction()
+                .replace(R.id.fragreplace, sportTimer).commit();
 
-        npHours.setMaxValue(23);
-        npHours.setMinValue(0);
-        npHours.setWrapSelectorWheel(false);
-        npMinutes.setMaxValue(59);
-        npMinutes.setMinValue(0);
-        npMinutes.setWrapSelectorWheel(false);
-        npSeconds.setMaxValue(59);
-        npSeconds.setMinValue(0);
-        npSeconds.setWrapSelectorWheel(false);
-        btnStart.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnStart.getText().toString().equals("Start")) {
-                    MainActivity.sHour = npHours.getValue();
-                    MainActivity.sMinute = npMinutes.getValue();
-                    MainActivity.sSecond = npSeconds.getValue();
-                    MainActivity.time = (1000 * (60 * (60 * MainActivity.sHour)) + 1000 * (60 * MainActivity.sMinute) + 1000 * (MainActivity.sSecond) + 500);
-                    timer = new CounterClass(MainActivity.time, 1000);
-                    timer.start();
-                    btnStart.setText("Pause");
-                    btnStop.setText("Cancel");
-                    pincers.setVisibility(View.INVISIBLE);
-                   frameTime.setVisibility(View.VISIBLE);
-                } else if (btnStart.getText().toString().equals("Resume")) {
-                    MainActivity.time = MainActivity.timePause;
-                    timer = new CounterClass(MainActivity.time, 1000);
-                    timer.start();
-                    btnStart.setText("Pause");
-                    btnStop.setText("Cancel");
-                    pincers.setVisibility(View.INVISIBLE);
-                    frameTime.setVisibility(View.VISIBLE);
-                } else {
-                    timer.cancel();
-                    btnStart.setText("Resume");
-                    btnStop.setText("Cancel");
-                }
-            }
-
-        });
-        btnStop.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnStop.getText().toString().equals("Cancel")) {
-                    timer.onFinish();
-                    timer.cancel();
-                  //  frameTime.setVisibility(View.INVISIBLE);
-                    btnStart.setText("Start");
-                    btnStop.setText("Reset");
-                } else {
-                    btnStart.setText("Start");
-                    npHours.setValue(0);
-                    npMinutes.setValue(0);
-                    npSeconds.setValue(0);
-                    textViewTime.setText("00:00:00");
-                }
-            }
-        });
+        btnOpenSportTimer = (ImageButton) findViewById(R.id.btnOpenSportTimer);
+        btnOpenStopWatch = (ImageButton) findViewById(R.id.btnOpenStopWatch);
+        btnOpenReminder = (ImageButton) findViewById(R.id.btnOpenReminder);
     }
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    @SuppressLint("NewApi")
-    public class CounterClass extends CountDownTimer {
-        public CounterClass(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-        @Override
-        public void onFinish() {
-            pincers.setVisibility(View.VISIBLE);
-            textViewTime.setText("End now");
-            btnStart.setText("Start");
-        }
-        @SuppressLint("NewApi")
-        @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-        @Override
-        public void onTick(long millisUntilFinished) {
-            long millis = millisUntilFinished;
-            String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
-                    TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                    TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-            System.out.println(hms);
-            textViewTime.setText(hms);
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnOpenSportTimer:
+                setTitle("Sport&Fighting Timer");
+                sportTimer = new SportTimer();
+                FragmentManager fTrans = getSupportFragmentManager();
+                fTrans.beginTransaction()
+                        .replace(R.id.fragreplace, sportTimer).commit();
+            case R.id. btnOpenStopWatch:
+                setTitle("StopWatch");
+                stopwatch = new Stopwatch();
+                FragmentManager fTrans1 = getSupportFragmentManager();
+                fTrans1.beginTransaction()
+                        .replace(R.id.fragreplace, stopwatch).commit();
+            case R.id.btnOpenReminder:
+                setTitle("Alarm and Reminder");
+               // fTrans.replace(R.id.fragreplace, sportTimer);
+            default:
+                break;
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -219,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, Developers.class);
             startActivity(intent);
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
