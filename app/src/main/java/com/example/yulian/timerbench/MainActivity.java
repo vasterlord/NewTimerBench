@@ -31,6 +31,7 @@ import android.app.FragmentHostCallback;
 import com.example.yulian.timerbench.R;
 import com.example.yulian.timerbench.Stopwatch;
 import com.example.yulian.timerbench.SportTimer;
+import com.example.yulian.timerbench.Dev;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageButton imgBtnSportTimer, imgBtnStopwatch, imgBtnReminder;
     SportTimer sportTimer;
     Stopwatch stopwatch;
+    Dev dev;
     FragmentManager fTrans;
     private Camera mCamera;
     private Parameters mParams;
@@ -187,13 +189,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_slideshow) {
-
-        }
-        else if (id == R.id.nav_send) {
-            Intent intent = new Intent(this, Developers.class);
-            startActivity(intent);
+        if (id == R.id.nav_dev) {
+         //   Intent intent = new Intent(this, Developers.class);
+           // startActivity(intent);
+            fTrans = getSupportFragmentManager();
+            dev = new Dev();
+            fTrans.beginTransaction()
+                    .replace(R.id.fragreplace, dev).commit();
+            // fTrans.addOnBackStackChangedListener(null);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

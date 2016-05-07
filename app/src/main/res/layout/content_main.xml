@@ -21,7 +21,7 @@
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ScrollMenu" >
+        android:id="@+id/ScrollMenu">
 
         <LinearLayout
             android:orientation="horizontal"
