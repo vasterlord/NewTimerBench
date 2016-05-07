@@ -9,6 +9,6 @@ public class Developers extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_developers);
-        setTitle(" Developers:)");
+        setTitle(" Developers ;)");
     }
 }
