@@ -82,19 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setTitle("Sport&Fighting Timer");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, sportTimer).commit();
-                fTrans.addOnBackStackChangedListener(null);
-                break;
-            case R.id.imgBtnStopwatch :
-                setTitle("StopWatch");
-                fTrans.beginTransaction()
-                        .replace(R.id.fragreplace, stopwatch).commit();
-                fTrans.addOnBackStackChangedListener(null);
-                break;
-            case R.id.imgBtnReminder:
-                setTitle("Alarm and Reminder");
-                fTrans.addOnBackStackChangedListener(null);
+               // fTrans.addOnBackStackChangedListener(null);
                 Context context = getApplicationContext();
-                Intent notificationIntent = new Intent(context, MainActivity.class);
+                Intent notificationIntent = new Intent();
                 PendingIntent contentIntent = PendingIntent.getActivity(context,
                         0, notificationIntent,
                         PendingIntent.FLAG_CANCEL_CURRENT);
@@ -118,6 +108,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 notification.flags = notification.flags | Notification.FLAG_INSISTENT;
                 Notification n = builder.getNotification();
                 nm.notify(1, n);
+                break;
+            case R.id.imgBtnStopwatch :
+                setTitle("StopWatch");
+                fTrans.beginTransaction()
+                        .replace(R.id.fragreplace, stopwatch).commit();
+              //  fTrans.addOnBackStackChangedListener(null);
+                break;
+            case R.id.imgBtnReminder:
+                setTitle("Alarm and Reminder");
+                //fTrans.addOnBackStackChangedListener(null);
+                Context context1 = getApplicationContext();
+                Intent notificationIntent1 = new Intent();
+                PendingIntent contentIntent1 = PendingIntent.getActivity(context1,
+                        0, notificationIntent1,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+                NotificationManager nm1 = (NotificationManager) context1
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                Resources res1 = context1.getResources();
+                Notification.Builder builder1 = new Notification.Builder(context1);
+                Uri ringURI1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                long[] vibrate1 = new long[] { 1000, 1000, 1000, 1000 };
+                builder1.setContentIntent(contentIntent1)
+                        .setSmallIcon(R.drawable.rem)
+                        .setWhen(System.currentTimeMillis())
+                        .setSound(ringURI1)
+                        .setVibrate(vibrate1)
+                        .setContentTitle(" Notification ")
+                        .setContentText(" Your task is done! Look  this ;)");
+                Notification notification1 = builder1.build();
+                notification1.defaults = Notification.DEFAULT_SOUND |
+                        Notification.DEFAULT_VIBRATE;
+                notification1.flags = notification1.flags | Notification.FLAG_SHOW_LIGHTS;
+                notification1.flags = notification1.flags | Notification.FLAG_INSISTENT;
+                Notification n1 = builder1.getNotification();
+                nm1.notify(1, n1);
                 break;
             default:
                 break;
