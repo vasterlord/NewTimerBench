@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,10 +46,11 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //ImageButton imgBtnSportTimer, imgBtnStopwatch, imgBtnReminder;
     Button btnSportTimer, btnStopwatch, btnReminder;
-    SportTimer sportTimer;
-    Stopwatch stopwatch;
+    SportTimer sportTimer = new SportTimer();
+    Stopwatch stopwatch = new Stopwatch();
     Dev dev;
-    FragmentManager fTrans;
+    Typeface tf;
+    FragmentManager fTrans = getSupportFragmentManager();
     private Camera mCamera;
     private Parameters mParams;
     @Override
@@ -66,36 +68,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        sportTimer = new SportTimer();
-        fTrans = getSupportFragmentManager();
         setTitle("Sport&Fighting Timer");
         fTrans.beginTransaction()
                 .replace(R.id.fragreplace, sportTimer).commit();
-        fTrans.addOnBackStackChangedListener(null);
+      //  tf = Typeface.createFromAsset(getAssets(),"ds-digital.ttf");
+       // sportTimer.textViewTime.setTypeface(tf);
+       // fTrans.addOnBackStackChangedListener(null);
        // imgBtnSportTimer = (ImageButton) findViewById(R.id.imgBtnSportTimer);
         //imgBtnStopwatch = (ImageButton) findViewById(R.id.imgBtnStopwatch);
         //imgBtnReminder = (ImageButton) findViewById(R.id.imgBtnReminder);
         btnSportTimer = (Button) findViewById(R.id.btnSportTimer);
         btnStopwatch = (Button) findViewById(R.id.btnStopwatch);
         btnReminder = (Button) findViewById(R.id.btnReminder);
-
     }
     public void onClick(View view) {
-        fTrans = getSupportFragmentManager();
-        sportTimer = new SportTimer();
-        stopwatch = new Stopwatch();
+
         switch (view.getId()){
             case R.id.btnSportTimer:
                 setTitle("Sport&Fighting Timer");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, sportTimer).commit();
+             //   tf = Typeface.createFromAsset(getAssets(),"ds-digital.ttf");
+              //  sportTimer.textViewTime.setTypeface(tf);
                // fTrans.addOnBackStackChangedListener(null);
                 break;
             case R.id.btnStopwatch:
-                setTitle("StopWatch");
+                setTitle("Stopwatch");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, stopwatch).commit();
-              //  fTrans.addOnBackStackChangedListener(null);
+               // tf = Typeface.createFromAsset(getAssets(),"ds-digital.ttf");
+                //stopwatch.timerValue.setTypeface(tf);
+                //stopwatch.timerValue2.setTypeface(tf);
+                //  fTrans.addOnBackStackChangedListener(null);
                 break;
             case R.id.btnReminder:
                 setTitle("Alarm and Reminder");
@@ -105,8 +109,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,7 +118,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -135,7 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_settings) {
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

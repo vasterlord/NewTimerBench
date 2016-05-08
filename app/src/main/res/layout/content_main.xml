@@ -40,7 +40,8 @@
                 android:text="Sport timer"
                 android:id="@+id/btnSportTimer"
                 android:background="#feee72"
-                android:textColor="#ff282c" />
+                android:textColor="#ff282c"
+                android:onClick="onClick" />
 
             <Button
                 android:layout_width="67dp"
@@ -49,7 +50,8 @@
                 android:id="@+id/btnStopwatch"
                 android:background="#feee72"
                 android:textColor="#ff282c"
-                android:layout_marginLeft="65dp" />
+                android:layout_marginLeft="65dp"
+                android:onClick="onClick" />
 
             <Button
                 android:layout_width="48dp"
@@ -58,7 +60,8 @@
                 android:id="@+id/btnReminder"
                 android:background="#feee72"
                 android:textColor="#ff282c"
-                android:layout_marginLeft="73dp" />
+                android:layout_marginLeft="73dp"
+                android:onClick="onClick" />
 
         </LinearLayout>
     </HorizontalScrollView>
