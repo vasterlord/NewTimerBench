@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
@@ -42,7 +43,8 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    ImageButton imgBtnSportTimer, imgBtnStopwatch, imgBtnReminder;
+    //ImageButton imgBtnSportTimer, imgBtnStopwatch, imgBtnReminder;
+    Button btnSportTimer, btnStopwatch, btnReminder;
     SportTimer sportTimer;
     Stopwatch stopwatch;
     Dev dev;
@@ -70,9 +72,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fTrans.beginTransaction()
                 .replace(R.id.fragreplace, sportTimer).commit();
         fTrans.addOnBackStackChangedListener(null);
-        imgBtnSportTimer = (ImageButton) findViewById(R.id.imgBtnSportTimer);
-        imgBtnStopwatch = (ImageButton) findViewById(R.id.imgBtnStopwatch);
-        imgBtnReminder = (ImageButton) findViewById(R.id.imgBtnReminder);
+       // imgBtnSportTimer = (ImageButton) findViewById(R.id.imgBtnSportTimer);
+        //imgBtnStopwatch = (ImageButton) findViewById(R.id.imgBtnStopwatch);
+        //imgBtnReminder = (ImageButton) findViewById(R.id.imgBtnReminder);
+        btnSportTimer = (Button) findViewById(R.id.btnSportTimer);
+        btnStopwatch = (Button) findViewById(R.id.btnStopwatch);
+        btnReminder = (Button) findViewById(R.id.btnReminder);
 
     }
     public void onClick(View view) {
@@ -80,19 +85,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sportTimer = new SportTimer();
         stopwatch = new Stopwatch();
         switch (view.getId()){
-            case R.id.imgBtnSportTimer:
+            case R.id.btnSportTimer:
                 setTitle("Sport&Fighting Timer");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, sportTimer).commit();
                // fTrans.addOnBackStackChangedListener(null);
                 break;
-            case R.id.imgBtnStopwatch :
+            case R.id.btnStopwatch:
                 setTitle("StopWatch");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, stopwatch).commit();
               //  fTrans.addOnBackStackChangedListener(null);
                 break;
-            case R.id.imgBtnReminder:
+            case R.id.btnReminder:
                 setTitle("Alarm and Reminder");
                 //fTrans.addOnBackStackChangedListener(null);
                 break;

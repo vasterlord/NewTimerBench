@@ -31,31 +31,35 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentLeft="false"
             android:id="@+id/MenuOptions"
-            android:background="#ffffff" >
+            android:background="#519bfc"
+            android:weightSum="1">
 
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/imgBtnSportTimer"
-                android:src="@drawable/timer"
-                android:layout_marginLeft="2dp"
-                android:onClick="onClick" />
+            <Button
+                android:layout_width="69dp"
+                android:layout_height="wrap_content"
+                android:text="Sport timer"
+                android:id="@+id/btnSportTimer"
+                android:background="#feee72"
+                android:textColor="#ff282c" />
 
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/imgBtnStopwatch"
-                android:src="@drawable/al"
-                android:layout_marginLeft="90dp"
-                android:onClick="onClick" />
+            <Button
+                android:layout_width="67dp"
+                android:layout_height="wrap_content"
+                android:text="Stopwatch"
+                android:id="@+id/btnStopwatch"
+                android:background="#feee72"
+                android:textColor="#ff282c"
+                android:layout_marginLeft="65dp" />
 
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:id="@+id/imgBtnReminder"
-                android:layout_marginLeft="75dp"
-                android:src="@drawable/rem"
-                android:onClick="onClick" />
+            <Button
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="Reminder"
+                android:id="@+id/btnReminder"
+                android:background="#feee72"
+                android:textColor="#ff282c"
+                android:layout_marginLeft="73dp" />
+
         </LinearLayout>
     </HorizontalScrollView>
 
