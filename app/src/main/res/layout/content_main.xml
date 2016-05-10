@@ -60,7 +60,7 @@
                 android:id="@+id/btnReminder"
                 android:background="#feee72"
                 android:textColor="#ff282c"
-                android:layout_marginLeft="73dp"
+                android:layout_marginLeft="64dp"
                 android:onClick="onClick" />
 
         </LinearLayout>
