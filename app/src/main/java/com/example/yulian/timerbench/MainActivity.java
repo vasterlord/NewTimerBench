@@ -34,6 +34,7 @@ import com.example.yulian.timerbench.R;
 import com.example.yulian.timerbench.Stopwatch;
 import com.example.yulian.timerbench.SportTimer;
 import com.example.yulian.timerbench.Dev;
+import com.example.yulian.timerbench.Reminder;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -44,10 +45,10 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 @SuppressLint("NewApi")
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //ImageButton imgBtnSportTimer, imgBtnStopwatch, imgBtnReminder;
     Button btnSportTimer, btnStopwatch, btnReminder;
     SportTimer sportTimer = new SportTimer();
     Stopwatch stopwatch = new Stopwatch();
+    Reminder reminder = new Reminder();
     Dev dev;
     Typeface tf;
     FragmentManager fTrans = getSupportFragmentManager();
@@ -71,12 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitle("Sport&Fighting Timer");
         fTrans.beginTransaction()
                 .replace(R.id.fragreplace, sportTimer).commit();
-      //  tf = Typeface.createFromAsset(getAssets(),"ds-digital.ttf");
-       // sportTimer.textViewTime.setTypeface(tf);
-       // fTrans.addOnBackStackChangedListener(null);
-       // imgBtnSportTimer = (ImageButton) findViewById(R.id.imgBtnSportTimer);
-        //imgBtnStopwatch = (ImageButton) findViewById(R.id.imgBtnStopwatch);
-        //imgBtnReminder = (ImageButton) findViewById(R.id.imgBtnReminder);
         btnSportTimer = (Button) findViewById(R.id.btnSportTimer);
         btnStopwatch = (Button) findViewById(R.id.btnStopwatch);
         btnReminder = (Button) findViewById(R.id.btnReminder);
@@ -88,22 +83,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setTitle("Sport&Fighting Timer");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, sportTimer).commit();
-             //   tf = Typeface.createFromAsset(getAssets(),"ds-digital.ttf");
-              //  sportTimer.textViewTime.setTypeface(tf);
-               // fTrans.addOnBackStackChangedListener(null);
                 break;
             case R.id.btnStopwatch:
                 setTitle("Stopwatch");
                 fTrans.beginTransaction()
                         .replace(R.id.fragreplace, stopwatch).commit();
-               // tf = Typeface.createFromAsset(getAssets(),"ds-digital.ttf");
-                //stopwatch.timerValue.setTypeface(tf);
-                //stopwatch.timerValue2.setTypeface(tf);
-                //  fTrans.addOnBackStackChangedListener(null);
                 break;
             case R.id.btnReminder:
                 setTitle("Alarm and Reminder");
-                //fTrans.addOnBackStackChangedListener(null);
+                fTrans.beginTransaction()
+                        .replace(R.id.fragreplace, reminder).commit();
                 break;
             default:
                 break;
@@ -145,13 +134,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_dev) {
-         //   Intent intent = new Intent(this, Developers.class);
-           // startActivity(intent);
             fTrans = getSupportFragmentManager();
             dev = new Dev();
             fTrans.beginTransaction()
                     .replace(R.id.fragreplace, dev).commit();
-            // fTrans.addOnBackStackChangedListener(null);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
